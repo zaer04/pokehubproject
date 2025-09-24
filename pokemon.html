@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Information</title>
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/pokemon-solid">
+
+    <style>
+        body {
+            font-family: 'Pokemon Solid', Arial, sans-serif; /* Use the Pokemon Solid font for the entire body */
+            background-color: #98E4FF;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            color: #333; /* Text color */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .pokemon-info {
+            margin-top: 20px;
+        }
+
+        .pokemon-info img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pokémon Information</h1>
+        <div class="search-bar">
+            <form id="searchForm">
+                <input type="text" id="pokemonName" placeholder="Enter Pokemon name">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+      <div class="container">
+        <p>
+          Search for a specific Pokémon name, or type in a number!
+        </p>
+        
+      </div>
+        <div class="pokemon-info" id="pokemonInfo">
+            <!-- Pokemon info will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const pokemonName = document.getElementById('pokemonName').value.toLowerCase().trim();
+            if (pokemonName !== '') {
+                fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Pokemon not found');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const pokemonInfo = document.getElementById('pokemonInfo');
+                        pokemonInfo.innerHTML = `
+                            <h2>${data.name}</h2>
+                            <img src="${data.sprites.front_default}" alt="${data.name}">
+                            <p>Height: ${data.height}</p>
+                            <p>Weight: ${data.weight}</p>
+                            <p>Abilities:</p>
+                            <ul>
+                                ${data.abilities.map(ability => `<li>${ability.ability.name}</li>`).join('')}
+                            </ul>
+                        `;
+                    })
+                    .catch(error => {
+                        const pokemonInfo = document.getElementById('pokemonInfo');
+                        pokemonInfo.innerHTML = `<p>${error.message}</p>`;
+                    });
+            }
+        });
+    </script>
+<head>
+    <style>
+        body {
+            font-family: 'Pokemon Solid', Arial, sans-serif; /* Use the Pokemon Solid font for the entire body */
+            background-color: #98E4FF; /* Yellow background */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            color: #333; /* Text color */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .return-home {
+            display: inline-block;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .return-home:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pokemon information content goes here -->
+        <a class="return-home" href="index.html">Return to Homepage</a>
+    </div>
+</body>
+</body>
+</html>
